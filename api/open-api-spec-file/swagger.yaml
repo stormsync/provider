@@ -1,0 +1,1013 @@
+openapi: 3.0.3
+info:
+  title: StormSync API- OpenAPI 3.1
+  contact:
+    email: email@jasoncostello.com
+  version: v1.0.3
+externalDocs:
+  description: Access historic and near real-time data from the Storm Reports generated
+    by the National Weather Service's Storm Reports found at https://www.spc.noaa.gov/climo/reports/today.html.
+  url: https://github.com/stormsync
+servers:
+- url: https://stormsync.swagger.io/api/v3
+tags:
+- name: all
+  description: "access hail, wind, and tornado reports using various filters."
+- name: hail
+  description: "Access hail report data with the following properties; Time,Size,Distance,Direction,Location,County,State,Lat,Lon,Comments"
+- name: wind
+  description: "Access wind report data with the following properties; Time,Speed,Distance,Direction,Location,County,State,Lat,Lon,Comments"
+- name: tornado
+  description: "Access tornado  report data with the following properties; Time,F_Scale,Distance,Direction,Location,County,State,Lat,Lon,Comments"
+paths:
+  /v1/report/hail:
+    get:
+      tags:
+      - hail
+      summary: Returns hail reports that match the required parameters.
+      description: Multiple status values can be provided with comma separated strings
+      operationId: getHailReports
+      parameters:
+      - name: from-date
+        in: query
+        description: Return hail reports starting on this date and continue to most
+          recent.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: to-date
+        in: query
+        description: Return hail reports before and including this date.  Can be combined
+          with from_date query to apply a specific range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: size-greater-than
+        in: query
+        description: Return hail reports that have hail greater than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: size-less-than
+        in: query
+        description: Return hail reports that have hail less than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Return hail reports that have the provided direction.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: distance
+        in: query
+        description: Return hail reports that have the provided distance.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+      - name: location
+        in: query
+        description: Return hail reports that have the provided location.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: county
+        in: query
+        description: Return hail reports that have the provided count.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Return hail reports that have the provided two-letter state abbreviation.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maxLength: 2
+          minLength: 2
+          type: string
+      - name: lat
+        in: query
+        description: Return hail reports that have the provided latitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: long
+        in: query
+        description: Return hail reports that have the provided longitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: comments
+        in: query
+        description: Return hail reports that have the provided comments.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: office
+        in: query
+        description: Return hail reports that have the provided office code.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HailReports'
+        "400":
+          description: Invalid ID supplied
+        "403":
+          description: Forbidden
+        "404":
+          description: Report not found
+        "405":
+          description: Validation exception
+        "429":
+          description: Rate Limit
+      security:
+      - RO_API_KEY: []
+  /v1/report/wind:
+    get:
+      tags:
+      - wind
+      summary: Returns wind reports that match the required parameters.
+      description: Multiple status values can be provided with comma separated strings
+      operationId: getWindReports
+      parameters:
+      - name: from-date
+        in: query
+        description: Return wind reports starting on this date and continue to most
+          recent.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: to-date
+        in: query
+        description: Return wind reports before and including this date.  Can be combinded
+          with from_date query to apply a specific range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: speed-greater-than
+        in: query
+        description: Return wind reports that have wind greater than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: speed-less-than
+        in: query
+        description: Return wind reports that have wind less than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Return wind reports that have the provided direction.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: distance
+        in: query
+        description: Return wind reports that have the provided distance.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+      - name: location
+        in: query
+        description: Return wind reports that have the provided location.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: county
+        in: query
+        description: Return wind reports that have the provided count.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Return wind reports that have the provided two-letter state abbreviation.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maxLength: 2
+          minLength: 2
+          type: string
+      - name: lat
+        in: query
+        description: Return wind reports that have the provided latitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: long
+        in: query
+        description: Return wind reports that have the provided longitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: comments
+        in: query
+        description: Return wind reports that have the provided comments.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: office
+        in: query
+        description: Return wind reports that have the provided office code.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WindReports'
+        "400":
+          description: Invalid ID supplied
+        "403":
+          description: Forbidden
+        "404":
+          description: Report not found
+        "405":
+          description: Validation exception
+        "429":
+          description: Rate Limit
+      security:
+      - RO_API_KEY: []
+  /v1/report/tornado:
+    get:
+      tags:
+      - tornado
+      summary: Returns tornado reports that match the required parameters.
+      description: Multiple status values can be provided with comma separated strings
+      operationId: getTornadoReports
+      parameters:
+      - name: from-date
+        in: query
+        description: Return tornado reports starting on this date and continue to
+          most recent.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: to-date
+        in: query
+        description: Return tornado reports before and including this date.  Can be
+          combinded with from_date query to apply a specific range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: f-scale-greater-than
+        in: query
+        description: Return tornado reports that have f-scale greater than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: f-scale-less-than
+        in: query
+        description: Return tornado reports that have f-scale less than this size.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Return tornado reports that have the provided direction.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: distance
+        in: query
+        description: Return tornado reports that have the provided distance.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+      - name: location
+        in: query
+        description: Return tornado reports that have the provided location.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: county
+        in: query
+        description: Return tornado reports that have the provided count.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Return tornado reports that have the provided two-letter state
+          abbreviation.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maxLength: 2
+          minLength: 2
+          type: string
+      - name: lat
+        in: query
+        description: Return tornado reports that have the provided latitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: long
+        in: query
+        description: Return tornado reports that have the provided longitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: comments
+        in: query
+        description: Return tornado reports that have the provided comments.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: office
+        in: query
+        description: Return tornado reports that have the provided office code.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TornadoReports'
+        "400":
+          description: Invalid ID supplied
+        "403":
+          description: Forbidden
+        "404":
+          description: Report not found
+        "405":
+          description: Validation exception
+        "429":
+          description: Rate Limit
+      security:
+      - RO_API_KEY: []
+  /v1/report/all:
+    get:
+      tags:
+      - all
+      summary: Returns all reports that match the required parameters.
+      description: Multiple status values can be provided with comma separated strings
+      operationId: getReports
+      parameters:
+      - name: from-date
+        in: query
+        description: Return all reports starting on this date and continue to most
+          recent.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: to-date
+        in: query
+        description: Return all reports before and including this date.  Can be combinded
+          with from_date query to apply a specific range.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Return all reports that have the provided direction.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: distance
+        in: query
+        description: Return all reports that have the provided distance.
+        required: false
+        style: form
+        explode: true
+        schema:
+          minimum: 0
+          type: integer
+      - name: location
+        in: query
+        description: Return all reports that have the provided location.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: county
+        in: query
+        description: Return all reports that have the provided count.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: Return all reports that have the provided two-letter state abbreviation.
+        required: false
+        style: form
+        explode: true
+        schema:
+          maxLength: 2
+          minLength: 2
+          type: string
+      - name: lat
+        in: query
+        description: Return all reports that have the provided latitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: long
+        in: query
+        description: Return all reports that have the provided longitude.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: comments
+        in: query
+        description: Return all reports that have the provided comments.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: office
+        in: query
+        description: Return all reports that have the provided office code.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StormReports'
+        "400":
+          description: Invalid ID supplied
+        "403":
+          description: Forbidden
+        "404":
+          description: Report not found
+        "405":
+          description: Validation exception
+        "429":
+          description: Rate Limit
+      security:
+      - RO_API_KEY: []
+  /v1/report/:
+    post:
+      tags:
+      - maint
+      summary: "Create a job to pull in data for a give date in the past. If data\
+        \ already exists for the give date and report type a 409 status will be returned;\
+        \ otherwise,  if the job is queued for processing a 202 is returned.  In future\
+        \ versions of the api a url will be provided to check on the job status, but\
+        \ that does not exist at this point."
+      description: Returns a single Report
+      operationId: addReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_report_body'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "202":
+          description: Job added to queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "400":
+          description: Invalid date supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "401":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "403":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "429":
+          description: Rate limiting exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+      security:
+      - RW_API_KEY: []
+components:
+  schemas:
+    StormReports:
+      type: object
+      properties:
+        HailReports:
+          $ref: '#/components/schemas/HailReport'
+        TornadoReports:
+          $ref: '#/components/schemas/TornadoReport'
+        WindReports:
+          $ref: '#/components/schemas/WindReport'
+      example:
+        TornadoReports:
+          Office: Office
+          F_Scale: F_Scale
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+        WindReports:
+          Office: Office
+          Speed: Speed
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+        HailReports:
+          Office: Office
+          Size: Size
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+    HailReport:
+      type: object
+      properties:
+        Time:
+          type: string
+          description: "Date and time the report was generated in UTC time. The date\
+            \ format is YYYY-MM-DD and the time format is HH:MM:SS.SSSZ using 24 hour\
+            \ mode (3PM = 15, 3AM = 03)."
+          format: date-time
+        Size:
+          maximum: 6
+          minimum: 0
+          type: string
+          description: "Number indicating the size of reported hail stones in 1/100ths\
+            \ of an inch. 100 == 1in, 250 == 2.5in, 50 == .5in. If unknown a zero\
+            \ (0) is reported."
+        Direction:
+          type: string
+          description: "The direction, (NNW, NW, SSW, etc), from the known landmark\
+            \ provided as a reference in the location field."
+        Distance:
+          type: integer
+          description: "The distance, in miles, from the known landmark provided as\
+            \ a reference in the location field."
+        Location:
+          type: string
+          description: "A known landmark to provide as a reference for direction and\
+            \ distance to the hail when reported. This can be a town, city, physical,\
+            \ or man-made feature."
+        County:
+          type: string
+          description: County of the referenced hail when it was reported.
+        State:
+          type: string
+          description: Two letter state abbreviation of the referenced hail when it
+            was reported.
+        Lat:
+          type: string
+          description: Latitude of the referenced hail when it was reported.
+        Lon:
+          type: string
+          description: Longitude of the referenced hail when it was reported.
+        Comments:
+          type: string
+          description: Remarks and comments regarding the referenced hail when it
+            was reported.
+        Office:
+          type: string
+          description: Reporting weather office.
+      example:
+        Office: Office
+        Size: Size
+        State: State
+        Comments: Comments
+        Time: 2000-01-23T04:56:07.000+00:00
+        Lon: Lon
+        Direction: Direction
+        County: County
+        Distance: 0
+        Lat: Lat
+        Location: Location
+    HailReports:
+      type: object
+      properties:
+        reports:
+          $ref: '#/components/schemas/HailReport'
+      example:
+        reports:
+          Office: Office
+          Size: Size
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+    WindReport:
+      type: object
+      properties:
+        Time:
+          type: string
+          description: "Date and time the report was generated in UTC time. The date\
+            \ format is YYYY-MM-DD and the time format is HH:MM:SS.SSSZ using 24 hour\
+            \ mode (3PM = 15, 3AM = 03)."
+          format: date-time
+        Speed:
+          maximum: 6
+          minimum: 0
+          type: string
+          description: Number indicating the speed of wind gusts in miles per hour
+            (MPH).
+        Direction:
+          type: string
+          description: "The direction, (NNW, NW, SSW, etc), from the known landmark\
+            \ provided as a reference in the location field."
+        Distance:
+          type: integer
+          description: "The distance, in miles, from the known landmark provided as\
+            \ a reference in the location field."
+        Location:
+          type: string
+          description: "A known landmark to provide as a reference for direction and\
+            \ distance to the hail when reported. This can be a town, city, physical,\
+            \ or man-made feature."
+        County:
+          type: string
+          description: County of the referenced hail when it was reported.
+        State:
+          type: string
+          description: Two letter state abbreviation of the referenced hail when it
+            was reported.
+        Lat:
+          type: string
+          description: Latitude of the referenced hail when it was reported.
+        Lon:
+          type: string
+          description: Longitude of the referenced hail when it was reported.
+        Comments:
+          type: string
+          description: |-
+            Remarks and comments regarding the referenced hail when it was reported.
+            - "UTILITY POLES WERE DOWNED IN THE 3200 BLOCK OF DEARBORN STREET AS WELL AS DAVID RAINES ROAD. (SHV)"
+        Office:
+          type: string
+          description: Reporting weather office.
+      example:
+        Office: Office
+        Speed: Speed
+        State: State
+        Comments: Comments
+        Time: 2000-01-23T04:56:07.000+00:00
+        Lon: Lon
+        Direction: Direction
+        County: County
+        Distance: 0
+        Lat: Lat
+        Location: Location
+    WindReports:
+      type: object
+      properties:
+        reports:
+          $ref: '#/components/schemas/WindReport'
+      example:
+        reports:
+          Office: Office
+          Speed: Speed
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+    TornadoReport:
+      type: object
+      properties:
+        Time:
+          type: string
+          description: "Date and time the report was generated in UTC time. The date\
+            \ format is YYYY-MM-DD and the time format is HH:MM:SS.SSSZ using 24 hour\
+            \ mode (3PM = 15, 3AM = 03)."
+          format: date-time
+        F_Scale:
+          maximum: 6
+          minimum: 0
+          type: string
+          description: Number indicating the Enhanced Fujita (EF) Scale of the indicated
+            tornado.  The number six (6) will be provided when the EF Scale number
+            is unkown.
+        Direction:
+          type: string
+          description: "The direction, (NNW, NW, SSW, etc), from the known landmark\
+            \ provided as a reference in the location field."
+        Distance:
+          type: integer
+          description: "The distance, in miles, from the known landmark provided as\
+            \ a reference in the location field."
+        Location:
+          type: string
+          description: "A known landmark to provide as a reference for direction and\
+            \ distance to the hail when reported. This can be a town, city, physical,\
+            \ or man-made feature."
+        County:
+          type: string
+          description: County of the referenced hail when it was reported.
+        State:
+          type: string
+          description: Two letter state abbreviation of the referenced hail when it
+            was reported.
+        Lat:
+          type: string
+          description: Latitude of the referenced hail when it was reported.
+        Lon:
+          type: string
+          description: Longitude of the referenced hail when it was reported.
+        Comments:
+          type: string
+          description: Remarks and comments regarding the referenced hail when it
+            was reported.
+        Office:
+          type: string
+          description: Reporting weather office.
+      example:
+        Office: Office
+        F_Scale: F_Scale
+        State: State
+        Comments: Comments
+        Time: 2000-01-23T04:56:07.000+00:00
+        Lon: Lon
+        Direction: Direction
+        County: County
+        Distance: 0
+        Lat: Lat
+        Location: Location
+    TornadoReports:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/TornadoReport'
+      example:
+        reports:
+        - Office: Office
+          F_Scale: F_Scale
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+        - Office: Office
+          F_Scale: F_Scale
+          State: State
+          Comments: Comments
+          Time: 2000-01-23T04:56:07.000+00:00
+          Lon: Lon
+          Direction: Direction
+          County: County
+          Distance: 0
+          Lat: Lat
+          Location: Location
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: tag
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: message
+    v1_report_body:
+      type: object
+      properties:
+        dates:
+          type: array
+          items:
+            type: string
+            format: date
+  responses:
+    NotAuthorized:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    NotFound:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    Forbidden:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    SuccessResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    JobAddedResponse:
+      description: Job added to queue
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    InvalidDateResponse:
+      description: Invalid date supplied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    InvalidInputResponse:
+      description: Invalid input provided
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/\t-components.responses.NotFound.$ref target\
+              \ #/components/schemas/MessageResponse is not of expected type Response"
+    RateLimitExceededResponse:
+      description: Rate limiting exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+    InternalServerErrorResponse:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageResponse'
+  securitySchemes:
+    RO_API_KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    RW_API_KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
